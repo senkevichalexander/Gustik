@@ -55,3 +55,7 @@ dkms.conf
 /Test1/Test1/bin/Debug/netcoreapp3.1
 /Test1/Test1/obj/Debug/netcoreapp3.1
 /Test1/Test1/obj
+/Test2/.vs/Test2/v16
+/Test2/Test2/bin/Debug/netcoreapp3.1
+/Test2/Test2/obj
+/Test1/.vs/Test1/DesignTimeBuild
