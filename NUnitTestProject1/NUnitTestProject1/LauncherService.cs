@@ -12,21 +12,12 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace NUnitTestProject1
+namespace SteamAutomationProject
 {
     class LauncherService
     {
-        private readonly IWebDriver _driver;
-        private WebDriverWait _wait;
         private const string name = "SteamSetup.exe";
         private const string path = "C:\\Users\\Alexandra\\Downloads";
-
-
-        public LauncherService(IWebDriver driver)
-        {
-            _driver = driver;
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
-        }
 
         public void DownloadFile()
         {
@@ -74,9 +65,6 @@ namespace NUnitTestProject1
             }
         }
 
-
-
     }
-
     
 }

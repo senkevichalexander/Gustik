@@ -7,22 +7,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace NUnitTestProject1
+namespace SteamAutomationProject
 {
-    class GenrePage
+    public class GenrePage : MainPage
     {
-        private readonly IWebDriver _driver;
-        private WebDriverWait _wait;
-
-        public GenrePage(IWebDriver driver)
-        {
-            _driver = driver;
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
-        }
-
         public List<Game> GetGames()
         {
-            List<IWebElement> gamesElements = _driver.FindElements(By.XPath("//div[@id='NewReleasesRows']//a")).ToList();
+            List<IWebElement> gamesElements = Driver.FindElements(By.XPath("//div[@id='NewReleasesRows']//a")).ToList();
             List<Game> games = new List<Game>();
             foreach (var item in gamesElements)
             {
@@ -59,15 +50,15 @@ namespace NUnitTestProject1
                     game.Sale = Convert.ToInt32(c[1]);
                 }
                 
-
                 games.Add(game);
             }
+
             return games;
         }
 
         public void ClickGameWithTheBiggestSale()
         {
-            List<IWebElement> gamesElementsForSale = _driver.FindElements(By.XPath("//div[@id='NewReleasesRows']//a")).ToList();
+            List<IWebElement> gamesElementsForSale = Driver.FindElements(By.XPath("//div[@id='NewReleasesRows']//a")).ToList();
             int maxSale = 0;
             int saleViewer = 0;
             IWebElement maxSaleElement = gamesElementsForSale[0];
@@ -83,7 +74,6 @@ namespace NUnitTestProject1
                     var d = sale[0].Text.Split('-', '%');
                     saleViewer = Convert.ToInt32(d[1]);
                 };
-
                 if (saleViewer > maxSale)
                 {
                     maxSaleElement = item;
@@ -92,7 +82,7 @@ namespace NUnitTestProject1
             }
             var clickMaxSaleElementv = maxSaleElement.FindElement(By.ClassName("tab_item_name"));
             clickMaxSaleElementv.Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.ClassName("apphub_AppName")));
+            WaitHelper.SetExplicitWait(Driver, By.ClassName("apphub_AppName"));
 
         }
 

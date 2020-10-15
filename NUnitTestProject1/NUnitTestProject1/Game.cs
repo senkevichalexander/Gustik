@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NUnitTestProject1
+namespace SteamAutomationProject
 {
-    class Game
+    public class Game
     {
-
         public string Name { get; set; }
         public List<string> Genres { get; set; }
         public double Price { get; set; }

@@ -10,32 +10,27 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace NUnitTestProject1
+namespace SteamAutomationProject
 {
-    public class Tests
+    public class SteamTests
     {
         private IWebDriver _driver;
-        private Homepage _homePage;
+        private HomePage _homePage;
         private Logger _logger;
 
 
         [SetUp]
         public void Setup()
         {
+            _driver = DriverGenerator.GetInstance();
             _logger = LogManager.GetCurrentClassLogger();
-            var options = new ChromeOptions();
-            options.AddUserProfilePreference("download.prompt_for_download", false);
-            options.AddUserProfilePreference("download.directory_upgrade", true);
-            options.AddUserProfilePreference("safebrowsing.enabled", true);
-
-            _driver = new ChromeDriver(options);
-            _homePage = new Homepage(_driver);
+            _homePage = new HomePage();
             _homePage.Homepage_Open();
             _homePage.SelectLanguage();
         }
 
         [Test]
-        public void Test1()
+        public void SearchGamesBiggestSaleTest()
         {
             _logger.Info("Test1 started");
 
@@ -43,12 +38,12 @@ namespace NUnitTestProject1
             {
                 var genre = _homePage.ClickRandomGenre();
                 _logger.Info("Genre is getted");
-                GenrePage genrePage = new GenrePage(_driver);
+                GenrePage genrePage = new GenrePage();
                 var games = genrePage.GetGames();
                 _logger.Info("Game list is parsed");
                 genrePage.ClickGameWithTheBiggestSale();
                 _logger.Info("Gettng game with biggest sale");
-                GamePage gamePage = new GamePage(_driver);
+                GamePage gamePage = new GamePage();
                 var name = gamePage.GetName();
                 _logger.Info("Checked game in list of genres");
                 Assert.IsTrue(games.Any(x => x.Name == name));
@@ -62,17 +57,17 @@ namespace NUnitTestProject1
         }
 
         [Test]
-        public void Test2()
+        public void ActionsWithSteamLauncherTest()
         {
             _logger.Info("Test2 started");
 
             try
             {
                 _homePage.ClickInstallSteamButton();
-                SteamInstallPage steamInstallPage = new SteamInstallPage(_driver);
+                SteamInstallPage steamInstallPage = new SteamInstallPage();
                 steamInstallPage.InstallSteamButtonClick();
                 _logger.Info("clicked install button");
-                LauncherService downloadanddDeleteLauncher = new LauncherService(_driver);
+                LauncherService downloadanddDeleteLauncher = new LauncherService();
                 downloadanddDeleteLauncher.DownloadFile();
                 _logger.Info("steam app installed");
                 downloadanddDeleteLauncher.DeleteFile();
@@ -87,16 +82,17 @@ namespace NUnitTestProject1
         }
 
         [Test]
-
-        public void Test3()
+        public void ComparisonGenreList()
         {
             _logger.Info("Test3 started");
 
             try
             {
+                List<IWebElement> genreElements = _homePage.GetGenres();
+                List<string> texts = genreElements.Select(x => x.Text).ToList();
 
-                TagComparison tagComparison = new TagComparison(_driver);
-                Assert.IsTrue(tagComparison.CompareLists());
+                TagComparison tagComparison = new TagComparison();
+                Assert.IsTrue(tagComparison.CompareLists(texts));
                 _logger.Info("comparison finished");
             }
             catch (Exception e)
@@ -110,10 +106,9 @@ namespace NUnitTestProject1
 
 
         [TearDown]
-
         public void AfterTests()
         {
-            _driver.Close();
+            DriverGenerator.Close();
         }
     }
 }

@@ -62,3 +62,5 @@ dkms.conf
 /NUnitTestProject1/.vs/NUnitTestProject1
 /NUnitTestProject1/NUnitTestProject1/bin/Debug/netcoreapp3.1
 /NUnitTestProject1/NUnitTestProject1/obj
+/NUnitTestProject1/.vs/SteamAutomationProject/v16
+/NUnitTestProject1/.vs/SteamAutomationProject/DesignTimeBuild

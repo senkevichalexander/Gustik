@@ -7,21 +7,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace NUnitTestProject1
+namespace SteamAutomationProject
 {
-    class GamePage
+    class GamePage : MainPage
     {
-        private readonly IWebDriver _driver;
-        private WebDriverWait _wait;
-
-        public GamePage(IWebDriver driver)
-        {
-            _driver = driver;
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
-        }
         public string GetName()
         {
-            var getName = _driver.FindElement(By.ClassName("apphub_AppName")).Text;
+            var getName = Driver.FindElement(By.ClassName("apphub_AppName")).Text;
             return getName;
         }
     }

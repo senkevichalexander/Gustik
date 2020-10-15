@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTestProject1", "NUnitTestProject1\NUnitTestProject1.csproj", "{4ECB8DB9-C575-4368-8CE9-EFC5CEFAE83E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SteamAutomationProject", "NUnitTestProject1\SteamAutomationProject.csproj", "{4ECB8DB9-C575-4368-8CE9-EFC5CEFAE83E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

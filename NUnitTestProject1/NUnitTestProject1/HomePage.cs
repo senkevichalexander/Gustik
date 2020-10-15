@@ -7,53 +7,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NUnitTestProject1
+namespace SteamAutomationProject
 {
-    public class Homepage
+    public class HomePage : MainPage
     {
-        private readonly IWebDriver _driver;
-        private WebDriverWait _wait;
-        
         string page = "https://store.steampowered.com/?l=russian";
 
+        public void Homepage_Open()
+        {
+            Driver.Manage().Window.Maximize();
+            Driver.Navigate().GoToUrl(page);
+            WaitHelper.SetExplicitWait(Driver, By.Id("language_pulldown"));
+        }
 
-        public Homepage(IWebDriver driver)
-        {
-            _driver = driver;
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(20));
-        }
-        
-          public void Homepage_Open()
-        {
-            _driver.Manage().Window.Maximize();
-            _driver.Navigate().GoToUrl(page);
-            _wait.Until(ExpectedConditions.ElementExists(By.Id("language_pulldown")));
-        }
         public void SelectLanguage()
         {
-            IWebElement lang = _driver.FindElement(By.Id("language_pulldown"));
+            IWebElement lang = Driver.FindElement(By.Id("language_pulldown"));
             lang.Click();
-            IWebElement lang1 = _driver.FindElement(By.XPath("//*[contains(text(), 'английский')]"));
+            IWebElement lang1 = Driver.FindElement(By.XPath("//*[contains(text(), 'английский')]"));
             lang1.Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.XPath("//div[div[text()='Browse by genre']]")));
+            WaitHelper.SetExplicitWait(Driver, By.XPath("//div[div[text()='Browse by genre']]"));
+        }
+
+        public List<IWebElement> GetGenres()
+        {
+            return Driver.FindElements(By.XPath("//div[div[text()='Browse by genre']]//a")).ToList();            
         }
 
         public string ClickRandomGenre()
         {
             var random = new Random();
-            List<IWebElement> eles1 = _driver.FindElements(By.XPath("//div[div[text()='Browse by genre']]//a")).ToList();
-            int r = random.Next(eles1.Count-1);
-            var genre = eles1[r].Text;
-            eles1[r].Click();
+            List<IWebElement> genres = GetGenres();
+            int r = random.Next(genres.Count - 1);
+            var genre = genres[r].Text;
+            genres[r].Click();
 
             return genre;
         }
 
         public void ClickInstallSteamButton()
         {
-            IWebElement InstallSteamButton = _driver.FindElement(By.ClassName("header_installsteam_btn_content"));
+            IWebElement InstallSteamButton = Driver.FindElement(By.ClassName("header_installsteam_btn_content"));
             InstallSteamButton.Click();
-            _wait.Until(ExpectedConditions.ElementExists(By.XPath("//div[a[@class = 'about_install_steam_link']]")));
+            WaitHelper.SetExplicitWait(Driver, By.XPath("//div[a[@class = 'about_install_steam_link']]"));
         }
     }
 }
