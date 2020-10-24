@@ -14,19 +14,17 @@ using System.Runtime.InteropServices;
 
 namespace SteamAutomationProject
 {
-    class TagComparison
+    public class ComparisonService
     {
-        public bool CompareLists(List<string> texts)
+        public bool CompareLists(List<string> firstList, List<string> secondList)
         {
-            string textFile = @"C:\Users\Alexandra\Downloads\Gustik.txt";
-            List<string> lines = File.ReadAllLines(textFile).ToList();
-            var result = true;
+            var result = false;
 
-            foreach (var item in lines)
+            foreach (var item in secondList)
             {
-                if (!texts.Any(x => x == item))
+                if (firstList.Any(x => x == item))
                 {
-                    result = false;
+                    result = true;
                 }
             }
 

@@ -19,7 +19,8 @@ namespace SteamAutomationProject
                 options.AddUserProfilePreference("download.prompt_for_download", false);
                 options.AddUserProfilePreference("download.directory_upgrade", true);
                 options.AddUserProfilePreference("safebrowsing.enabled", true);
-                driver = new ChromeDriver(options); // open
+                driver = new ChromeDriver(options);
+                driver.Manage().Window.Maximize();// open
                 isOpen = true;
             }
 

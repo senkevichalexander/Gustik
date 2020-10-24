@@ -3,8 +3,10 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
+using SteamAutomationProject.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -25,7 +27,7 @@ namespace SteamAutomationProject
             _driver = DriverGenerator.GetInstance();
             _logger = LogManager.GetCurrentClassLogger();
             _homePage = new HomePage();
-            _homePage.Homepage_Open();
+            _homePage.OpenHomepage();
             _homePage.SelectLanguage();
         }
 
@@ -64,14 +66,22 @@ namespace SteamAutomationProject
             try
             {
                 _homePage.ClickInstallSteamButton();
-                SteamInstallPage steamInstallPage = new SteamInstallPage();
+
+                var path = Directory.GetCurrentDirectory() + "SteamSetup.exe";
+
+                var steamInstallPage = new SteamInstallPage();
                 steamInstallPage.InstallSteamButtonClick();
+                WaitHelper.WaitUntilFileExists(path);
                 _logger.Info("clicked install button");
-                LauncherService downloadanddDeleteLauncher = new LauncherService();
-                downloadanddDeleteLauncher.DownloadFile();
+
+                var downloadanddDeleteLauncher = new LauncherService();
+
+                Assert.IsTrue(downloadanddDeleteLauncher.CheckFileExists(path));
                 _logger.Info("steam app installed");
-                downloadanddDeleteLauncher.DeleteFile();
+
+                Assert.IsTrue(downloadanddDeleteLauncher.DeleteFile(path));
                 _logger.Info("steam app deleted from pc");
+                
             }
             catch (Exception e)
             {
@@ -88,11 +98,18 @@ namespace SteamAutomationProject
 
             try
             {
-                List<IWebElement> genreElements = _homePage.GetGenres();
-                List<string> texts = genreElements.Select(x => x.Text).ToList();
+                var path = Directory.GetCurrentDirectory() + "Gustik.txt"; 
+                
+                var genreElements = _homePage.GetGenres();
 
-                TagComparison tagComparison = new TagComparison();
-                Assert.IsTrue(tagComparison.CompareLists(texts));
+                var elementService = new ElementService();
+                var texts = elementService.GetTextListFromElements(genreElements);
+
+                var launcherService = new LauncherService();
+                var lines = launcherService.GetRowsFromFile(path);
+
+                var comparisonService = new ComparisonService();
+                Assert.IsTrue(comparisonService.CompareLists(texts, lines));
                 _logger.Info("comparison finished");
             }
             catch (Exception e)
