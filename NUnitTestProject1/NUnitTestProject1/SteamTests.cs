@@ -76,7 +76,7 @@ namespace SteamAutomationProject
 
                 var downloadanddDeleteLauncher = new LauncherService();
 
-                Assert.IsTrue(downloadanddDeleteLauncher.CheckFileExists(path));
+                Assert.IsTrue(downloadanddDeleteLauncher.DoesFileExist(path));
                 _logger.Info("steam app installed");
 
                 Assert.IsTrue(downloadanddDeleteLauncher.DeleteFile(path));

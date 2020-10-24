@@ -16,7 +16,7 @@ namespace SteamAutomationProject
 {
     public class LauncherService
     {
-        public bool CheckFileExists(string path)
+        public bool DoesFileExist(string path)
         {
             return File.Exists(path);
         }
