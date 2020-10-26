@@ -1,8 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace SteamAutomationProject
 {
@@ -19,6 +17,7 @@ namespace SteamAutomationProject
                 options.AddUserProfilePreference("download.prompt_for_download", false);
                 options.AddUserProfilePreference("download.directory_upgrade", true);
                 options.AddUserProfilePreference("safebrowsing.enabled", true);
+                options.AddUserProfilePreference("download.default_directory", Directory.GetCurrentDirectory());
                 driver = new ChromeDriver(options);
                 driver.Manage().Window.Maximize();// open
                 isOpen = true;
